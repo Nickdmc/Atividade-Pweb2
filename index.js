@@ -26,6 +26,20 @@ app.post('/categories', async (req, res) => {
   }
 });
 
+app.delete('/categories/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCategory = await Category.destroy({ where: { id } });
+
+    if (deletedCategory) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ error: 'Categoria não encontrada' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao remover categoria' });
+  }
+});
 
 app.get('/products', async (req, res) => {
   try {
@@ -47,7 +61,22 @@ app.post('/products', async (req, res) => {
   }
 });
 
+app.delete('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await Product.destroy({ where: { id } });
+
+    if (deletedProduct) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ error: 'Produto não encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao remover produto' });
+  }
+});
 
 app.listen(3000, () => {
   console.log('Servidor ta rodando na porta 3000');
 });
+
